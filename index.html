@@ -1,98 +1,48 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#222426"><meta name="description" content="Handwritten Active Recall Studio">
-<link rel="manifest" href="./manifest.webmanifest"><link rel="stylesheet" href="./styles.css">
-<title>Recall Studio</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#202124"><meta name="description" content="A handwriting-first active recall notebook">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>RecallNote</title><link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="libraryScreen" class="screen library-screen">
-  <aside class="sidebar">
-    <div class="brand"><span class="brand-symbol">R</span><span class="brand-name">Recall Studio</span><button id="collapseSidebar" class="plain small-only">☰</button></div>
-    <div class="side-nav">
-      <button class="side-link selected" data-view="all"><span class="side-ico">⌕</span><span>Search</span></button>
-      <button class="side-link" data-view="all"><span class="side-ico">▤</span><span>All notes</span><em id="allCount">0</em></button>
-      <button class="side-link" data-view="trash"><span class="side-ico">♲</span><span>Trash</span></button>
-      <div class="side-section"><span>FOLDER</span><button id="addFolder" class="tiny-add">＋</button></div>
-      <div id="folderList" class="folder-list"></div>
-      <div class="side-section"><span>SUBJECTS</span><button id="addSubject" class="tiny-add">＋</button></div>
-      <div id="subjectList" class="folder-list"></div>
-      <div class="side-section"><span>TAGS</span><button id="addTag" class="tiny-add">＋</button></div>
-      <div id="tagList" class="folder-list"></div>
-    </div>
-    <div class="sidebar-bottom"><button id="settingsOpen" class="side-link"><span class="side-ico">⚙</span><span>Settings</span></button><button id="backupOut" class="side-link"><span class="side-ico">⇧</span><span>Local backup</span></button><button id="backupIn" class="side-link"><span class="side-ico">⇩</span><span>Restore backup</span></button><input id="backupFile" type="file" accept="application/json" hidden></div>
-  </aside>
-  <main class="library-content">
-    <header class="library-top">
-      <div class="library-heading"><div class="crumb">LIBRARY <span>/</span> <b id="currentFolderLabel">ALL NOTES</b></div><h1 id="libraryTitle">All notes</h1></div>
-      <div class="library-actions"><label class="searchbox"><span>⌕</span><input id="searchInput" placeholder="Search notes"></label><button class="icon-square" id="sortBtn" title="Sort">☷</button><button class="icon-square" id="gridBtn" title="Grid view">▦</button><button class="create-btn" id="createMenuBtn">＋ <span>Create</span> <small>⌄</small></button></div>
-    </header>
-    <div class="backup-banner"><span>ⓘ</span><span>Keep a backup of your data regularly. Your notes are stored on this device.</span><button id="dismissBanner">×</button></div>
-    <div class="filter-tabs"><button class="tab active" data-filter="all">ALL</button><button class="tab" data-filter="note">NOTE</button><button class="tab" data-filter="pdf">PDF</button><span class="tab-spacer"></span><span class="muted small-text" id="libraryCount">0 items</span></div>
-    <section id="noteGallery" class="note-gallery"></section>
-    <div id="libraryEmpty" class="empty-library"><div class="empty-plus">＋</div><h2>No notes here yet</h2><p>Create a notebook page or import an image to get started.</p><button class="create-btn" id="emptyCreate">＋ Create note</button></div>
-  </main>
-  <div id="createPopover" class="popover create-popover hidden">
-    <button data-create="note"><span>✎</span><div><b>Create note</b><small>Start a handwritten page</small></div></button>
-    <button data-create="infinite"><span>⛶</span><div><b>Infinite note</b><small>Open a free canvas</small></div></button>
-    <button data-create="image"><span>▧</span><div><b>Import image</b><small>Use a diagram for recall</small></div></button>
-    <button data-create="pdf"><span>▤</span><div><b>Import PDF</b><small>Add pages from a PDF</small></div></button>
-    <button data-create="folder"><span>▰</span><div><b>New folder</b></div></button>
+<header class="topbar">
+  <button class="iconbtn" id="backBtn" aria-label="Back">‹</button><div class="brand">Recall<span>Note</span></div>
+  <div class="docname" id="docName">Untitled notebook</div>
+  <div class="top-actions"><span id="saveStatus" class="status">Saved locally</span><button class="iconbtn" id="newPageBtn" title="New page">＋</button><button class="iconbtn" id="installBtn" hidden title="Install app">⇩</button><button class="iconbtn" id="menuBtn" title="More">⋯</button></div>
+</header>
+<nav class="toolbar" aria-label="Drawing tools">
+  <div class="toolgroup">
+    <button class="tool active" data-tool="pen" title="Pen">✎<small>Pen</small></button>
+    <button class="tool" data-tool="pencil" title="Pencil">✐<small>Pencil</small></button>
+    <button class="tool" data-tool="highlighter" title="Highlighter">▰<small>Highlight</small></button>
+    <button class="tool" data-tool="eraser" title="Eraser">◩<small>Eraser</small></button>
+    <button class="tool" data-tool="lasso" title="Lasso">⌁<small>Lasso</small></button>
   </div>
-  <input id="importImage" type="file" accept="image/*" hidden><input id="importPdf" type="file" accept="application/pdf" hidden>
-</div>
-
-<div id="editorScreen" class="screen editor-screen hidden">
-  <header class="editor-header">
-    <div class="editor-left"><button class="head-icon" id="goLibrary" title="Back">‹</button><button class="head-icon" title="Page navigation" id="quickPages">▣</button><button class="head-icon" title="Document info" id="docInfo">ⓘ</button><span class="vertical-line"></span><span class="editor-subject" id="editorSubject">BIOLOGY</span></div>
-    <input id="documentTitle" class="document-title" value="Untitled note" aria-label="Note title">
-    <div class="editor-right"><button class="head-icon" id="undoBtn" title="Undo">↶</button><button class="head-icon" id="redoBtn" title="Redo">↷</button><button class="head-icon" id="pagePanelBtn" title="Document overview">▤</button><button class="head-icon" id="recallPanelBtn" title="Recall panel">◉</button><button class="head-icon" id="moreBtn" title="More functions">•••</button></div>
-  </header>
-  <div class="drawing-toolbar">
-    <div class="toolbar-main">
-      <button class="draw-tool active" data-tool="pen" title="Pen"><span>✎</span></button>
-      <button class="draw-tool" data-tool="pencil" title="Pencil"><span>⌁</span></button>
-      <button class="draw-tool" data-tool="highlighter" title="Highlighter"><span>▰</span></button>
-      <button class="draw-tool" data-tool="eraser" title="Eraser"><span>◩</span></button>
-      <button class="draw-tool" data-tool="lasso" title="Lasso"><span>〰</span></button>
-      <button class="draw-tool" data-tool="shape" title="Shapes"><span>◇</span></button>
-      <button class="draw-tool" data-tool="image" title="Insert image"><span>▧</span></button>
-      <button class="draw-tool" data-tool="text" title="Text"><span>T</span></button>
-      <button class="draw-tool" data-tool="hand" title="Pan canvas"><span>✋</span></button>
-      <span class="toolbar-divider"></span>
-      <button class="draw-tool" id="audioNote" title="Audio notes (not enabled)"><span>♫</span></button>
-      <button class="draw-tool" id="addNewPage" title="Add page"><span>▣＋</span></button>
-      <span class="toolbar-flex"></span>
-      <button class="head-icon" id="toggleFullscreen" title="Full screen">⛶</button>
-      <button class="head-icon" id="toggleRightPanel" title="Side panel">▥</button>
-    </div>
-    <div class="toolbar-properties">
-      <div class="property-group" id="toolSettingsGroup"><button class="property-trigger" id="toolSettingsBtn">⚙ <span>Tool settings</span>⌄</button></div>
-      <div class="property-group color-group"><span class="property-caption">COLOUR</span><label class="color-picker"><input type="color" id="inkColor" value="#f4f4f4"></label><div class="color-swatches"><button style="--sw:#f4f4f4" data-color="#f4f4f4"></button><button style="--sw:#f2c94c" data-color="#f2c94c"></button><button style="--sw:#eb7777" data-color="#eb7777"></button><button style="--sw:#53b7ad" data-color="#53b7ad"></button><button style="--sw:#6299dc" data-color="#6299dc"></button><button style="--sw:#b38bd7" data-color="#b38bd7"></button></div></div>
-      <div class="property-group stroke-group"><span class="property-caption">SIZE</span><input id="strokeSize" type="range" min="1" max="20" value="3"><output id="strokeValue">3 px</output></div>
-      <div class="property-group zoom-group"><button id="zoomOut">−</button><span id="zoomValue">100%</span><button id="zoomIn">＋</button><button id="fitPage">↗</button></div>
-    </div>
-    <div class="paper-toolbar"><span class="property-caption">PAPER</span><button class="paper-choice active" data-paper="blank">Blank</button><button class="paper-choice" data-paper="ruled">Thin line</button><button class="paper-choice" data-paper="grid">Dot grid</button><span class="toolbar-divider"></span><button class="paper-choice active" data-mode="page">Page</button><button class="paper-choice" data-mode="infinite">Infinite</button><span class="toolbar-flex"></span><button class="head-icon" id="paperMenu">⌄</button></div>
-    <div class="tool-popover hidden" id="toolPopover">
-      <div class="popover-title">Tool settings <button id="closeToolPopover">×</button></div>
-      <div class="setting-row"><label>Stroke size</label><input type="range" id="popupSize" min="1" max="20" value="3"></div>
-      <div class="setting-row"><label>Stylus pressure</label><span class="toggle on" id="pressureToggle"></span></div>
-      <div class="setting-row"><label>Finger navigation only</label><span class="toggle on"></span></div>
-      <div class="setting-row"><label>Erase whole stroke</label><span class="toggle on"></span></div>
-    </div>
+  <div class="separator"></div>
+  <div class="toolgroup compact">
+    <button class="iconbtn" id="undoBtn" title="Undo">↶</button><button class="iconbtn" id="redoBtn" title="Redo">↷</button>
   </div>
-  <main class="editor-workspace">
-    <div class="canvas-area" id="canvasArea"><canvas id="drawingCanvas"></canvas><div id="pageIndicator" class="page-indicator">1 / 1</div></div>
-    <aside id="rightDrawer" class="right-drawer">
-      <div class="drawer-header"><div class="drawer-tabs"><button class="drawer-tab active" data-drawer="pages">Pages</button><button class="drawer-tab" data-drawer="recall">Recall</button></div><button class="head-icon" id="closeDrawer">×</button></div>
-      <div id="pagesDrawer" class="drawer-content"><div class="drawer-toolbar"><span>DOCUMENT OVERVIEW</span><button id="addPageFromDrawer">＋</button></div><div id="pageThumbnails" class="page-thumbnails"></div></div>
-      <div id="recallDrawer" class="drawer-content hidden"><div class="drawer-toolbar"><span>ACTIVE RECALL</span></div><p class="drawer-description">Create masks without changing your original handwritten notes.</p><button class="drawer-action" id="makeCloze">＋ Handwritten Cloze</button><button class="drawer-action" id="makeImageMask">▧ Image occlusion</button><button class="drawer-action" id="makeAreaMask">□ Area occlusion</button><button class="drawer-action" id="pageRecall">◉ Page recall</button><div class="drawer-separator"></div><button class="drawer-action accent" id="revealAll">Reveal all</button><button class="drawer-action" id="hideAll">Hide all</button><div id="recallList" class="recall-list"></div></div>
-    </aside>
-  </main>
-  <div id="morePopover" class="popover more-popover hidden"><button id="menuFullscreen">⛶ Fullscreen zoom</button><button id="menuPageOverview">▦ Document overview</button><button id="exportNote">⇧ Export note JSON</button><button id="deleteNote" class="danger">♲ Move to trash</button></div>
-  <div id="settingsModal" class="modal-backdrop hidden"><div class="settings-modal"><div class="modal-head"><h2>Settings</h2><button id="closeSettings">×</button></div><div class="settings-layout"><nav><button class="settings-tab active">Local backup</button><button class="settings-tab">Cloud sync</button><button class="settings-tab">Theme settings</button><button class="settings-tab">Document settings</button><button class="settings-tab">Stylus settings</button><button class="settings-tab">Gesture settings</button></nav><section><h3>Local backup</h3><p>Your notes are saved in this browser on this device.</p><button class="drawer-action" id="settingsExport">Export all notes</button><p class="muted">Google Drive sync will be added after local storage and recovery are fully tested.</p></section></div></div></div>
-  <div id="toast" class="toast"></div><input id="editorImage" type="file" accept="image/*" hidden>
-</div>
-<script type="module" src="./app.js"></script>
+  <div class="separator"></div>
+  <div class="swatches" id="swatches"><button class="swatch selected" data-color="#f4f4f4" style="--sw:#f4f4f4"></button><button class="swatch" data-color="#f3c84b" style="--sw:#f3c84b"></button><button class="swatch" data-color="#f08080" style="--sw:#f08080"></button><button class="swatch" data-color="#69b8df" style="--sw:#69b8df"></button><button class="swatch" data-color="#79c69a" style="--sw:#79c69a"></button></div>
+  <div class="separator"></div>
+  <label class="size-control">Size <input id="sizeRange" type="range" min="1" max="18" value="3"><output id="sizeValue">3</output></label>
+  <div class="separator"></div>
+  <button class="modebtn" id="canvasModeBtn">Fixed page ▾</button>
+  <button class="modebtn recall" id="recallBtn" title="Recall tools coming in Phase 2">✦ Recall</button>
+</nav>
+<main class="workspace">
+  <aside class="sidepanel" id="sidepanel"><div class="side-title">PAGES <button id="addPageSide">＋</button></div><div id="pageList" class="page-list"></div><div class="side-footer">Local notebook</div></aside>
+  <section class="stage" id="stage">
+    <div class="canvas-wrap" id="canvasWrap"><canvas id="paper"></canvas><canvas id="overlay"></canvas></div>
+    <div class="floating-controls"><button id="zoomOut">−</button><span id="zoomLabel">100%</span><button id="zoomIn">＋</button><button id="fitBtn" title="Fit page">⤢</button></div>
+    <div class="page-indicator" id="pageIndicator">1 / 1</div>
+    <div class="hint" id="hint">Use your stylus or finger to write</div>
+  </section>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<dialog id="modeDialog"><h3>Canvas type</h3><button data-mode="fixed">Fixed paper page</button><button data-mode="infinite">Infinite canvas</button><button class="dialog-close">Cancel</button></dialog>
+<dialog id="menuDialog"><h3>Notebook options</h3><button id="renameBtn">Rename notebook</button><button id="clearPageBtn">Clear current page</button><button id="exportBtn">Export page as PNG</button><button id="backupBtn">Download notebook backup</button><button class="dialog-close">Close</button></dialog>
+<script src="app.js"></script>
 </body></html>
