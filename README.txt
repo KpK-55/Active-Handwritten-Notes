@@ -1,37 +1,29 @@
-RecallNote – Phase 2 MVP (tablet-first)
+RecallNote – StarNote Importer Test Build
 
-Run
-1. Extract this folder.
-2. Serve over localhost or HTTPS:
-   python -m http.server 8000
-3. Open http://localhost:8000
-4. For Android tablet installation, deploy to GitHub Pages and install from Chrome.
+This build adds an experimental StarNote .note archive importer.
 
-Included
-- Canvas handwriting: pen, pencil preset, highlighter, whole-stroke eraser
-- Stylus/finger Pointer Events and pressure capture
-- Lasso selection
-- Create Cloze from selected handwriting (bounding-region mask)
-- Recall mode: tap a hidden region to reveal it
-- Reveal all / Hide all controls
-- Import an image into the page
-- Rectangular image occlusion masks using the Mask tool
-- Fixed paper and large work-surface modes
-- Multiple pages
-- IndexedDB persistence
-- PNG export and JSON notebook backup
-- PWA manifest and offline service worker
+How to test:
+1. Replace the files in your RecallNote repository with all files in this folder.
+2. Keep jszip.min.js in the same folder as index.html and app.js.
+3. Deploy to HTTPS/GitHub Pages.
+4. On tablet, open RecallNote and choose Import .note.
+5. Select your StarNote file: "Breathing and Exchange of gases.note".
 
-Important MVP limitations
-- Cloze currently masks the bounding rectangle around selected strokes; it does not yet provide precise stroke-shaped masking.
-- Image occlusion masks are rectangular only; freeform and ellipse masks are planned.
-- Images are positioned centrally on import; move/resize/select image tools are not yet implemented.
-- Eraser removes whole strokes.
-- Infinite canvas is a large work surface, not truly unbounded.
-- Undo/redo currently covers handwriting add/remove, not every object/mask operation.
-- No cloud sync yet. Data is stored locally in the browser's IndexedDB.
-- Test stylus pressure and pointer behavior on the target tablet; browser and stylus support vary.
+What this test importer currently reconstructs:
+- Reads the ZIP-based .note container.
+- Reads note_info metadata and identifies page IDs, dimensions and layer names.
+- Creates RecallNote pages for the discovered StarNote pages.
+- Extracts embedded PNG/JPEG/WebP resource assets and places them as image objects on imported pages.
+- Stores the original .note archive as a local IndexedDB backup record.
 
-Data model
-Each page stores strokes, cloze regions, imported images and occlusion masks separately.
-Original handwriting strokes remain stored when a cloze is created.
+Important limitations:
+- Original vector stroke/point binary records are NOT yet decoded into editable RecallNote strokes.
+- Imported page backgrounds/template appearance and exact resource placement are not yet reconstructed.
+- Extracted image assets are placed in a simple gallery layout, not their original positions.
+- This is an importer feasibility test, not a lossless conversion.
+- Do not delete your original StarNote file. The importer keeps a local copy, but that is not a substitute for an external backup.
+
+Technical:
+- Vanilla HTML/CSS/JS, no React/Vite.
+- JSZip is bundled locally so archive import works offline after deployment/cache.
+- IndexedDB schema upgraded to v2.

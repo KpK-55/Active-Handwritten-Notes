@@ -10,7 +10,8 @@
 <header class="topbar">
   <button class="iconbtn" id="backBtn" aria-label="Back">‹</button><div class="brand">Recall<span>Note</span></div>
   <div class="docname" id="docName">Untitled notebook</div>
-  <div class="top-actions"><span id="saveStatus" class="status">Saved locally</span><button class="iconbtn" id="newPageBtn" title="New page">＋</button><button class="iconbtn" id="installBtn" hidden title="Install app">⇩</button><button class="iconbtn" id="menuBtn" title="More">⋯</button></div>
+  <div class="top-actions"><span id="saveStatus" class="status">Saved locally</span><button class="modebtn" id="importNoteBtn" title="Import StarNote .note">Import .note</button><input id="noteFileInput" type="file" accept=".note,application/zip" hidden>
+  <button class="iconbtn" id="newPageBtn" title="New page">＋</button><button class="iconbtn" id="installBtn" hidden title="Install app">⇩</button><button class="iconbtn" id="menuBtn" title="More">⋯</button></div>
 </header>
 <nav class="toolbar" aria-label="Drawing tools">
   <div class="toolgroup">
@@ -51,5 +52,5 @@
 <dialog id="modeDialog"><h3>Canvas type</h3><button data-mode="fixed">Fixed paper page</button><button data-mode="infinite">Infinite canvas</button><button class="dialog-close">Cancel</button></dialog>
 <dialog id="recallDialog"><h3>Recall mode</h3><p id="recallInfo">Tap a hidden region to reveal it.</p><button class="dialog-close">Close</button></dialog>
 <dialog id="menuDialog"><h3>Notebook options</h3><button id="renameBtn">Rename notebook</button><button id="clearPageBtn">Clear current page</button><button id="exportBtn">Export page as PNG</button><button id="backupBtn">Download notebook backup</button><button class="dialog-close">Close</button></dialog>
-<script src="app.js"></script>
+<script src="jszip.min.js"></script><script src="app.js"></script>
 </body></html>
