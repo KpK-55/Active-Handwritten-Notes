@@ -1,29 +1,35 @@
-RecallNote – StarNote Importer Test Build
+RecallNote — Integrated Foundation Build
+========================================
 
-This build adds an experimental StarNote .note archive importer.
+This is a new plain HTML/CSS/JavaScript PWA foundation based on the StarNote interface overview supplied by the user.
 
-How to test:
-1. Replace the files in your RecallNote repository with all files in this folder.
-2. Keep jszip.min.js in the same folder as index.html and app.js.
-3. Deploy to HTTPS/GitHub Pages.
-4. On tablet, open RecallNote and choose Import .note.
-5. Select your StarNote file: "Breathing and Exchange of gases.note".
+INSTALL / DEPLOY
+1. Extract this ZIP.
+2. Replace the contents of the GitHub Pages repository with ALL files from this folder.
+3. Commit and push. Wait for GitHub Pages deployment.
+4. Open the site in Chrome on the tablet. Reload once after deployment; if the old app persists, clear that site's cached data.
+5. Use Create note to create notebooks. Data is stored locally in the browser using IndexedDB.
 
-What this test importer currently reconstructs:
-- Reads the ZIP-based .note container.
-- Reads note_info metadata and identifies page IDs, dimensions and layer names.
-- Creates RecallNote pages for the discovered StarNote pages.
-- Extracts embedded PNG/JPEG/WebP resource assets and places them as image objects on imported pages.
-- Stores the original .note archive as a local IndexedDB backup record.
+IMPLEMENTED IN THIS BUILD
+- Library/home screen with note cards, search, folders, tags, recent and trash views.
+- Create notebook with title, folder, A4 portrait/landscape, A3 portrait or infinite canvas, paper template and paper colour.
+- Multi-page notebooks and page navigation/overview.
+- Pen, pencil-style, highlighter, pressure-aware stylus stroke rendering when pressure is exposed by browser/device.
+- Eraser, lasso selection, cloze from selected handwriting, rectangular image occlusion, recall reveal/hide.
+- Lines, rectangles, ellipses, arrows, text insertion and image insertion.
+- Colour presets/custom colour, adjustable thickness, undo/redo.
+- Stylus-only ink: finger touch is navigation only; one finger pans, two fingers pinch zoom. Touch input does not create ink.
+- Local autosave, PNG export of current page, JSON notebook backup, dark/light theme.
+- PWA manifest and service worker cache.
 
-Important limitations:
-- Original vector stroke/point binary records are NOT yet decoded into editable RecallNote strokes.
-- Imported page backgrounds/template appearance and exact resource placement are not yet reconstructed.
-- Extracted image assets are placed in a simple gallery layout, not their original positions.
-- This is an importer feasibility test, not a lossless conversion.
-- Do not delete your original StarNote file. The importer keeps a local copy, but that is not a substitute for an external backup.
+NOT YET IMPLEMENTED / KNOWN LIMITS
+- No cloud sync or multi-device sync.
+- StarNote .note importing is intentionally not included in this build.
+- PDF export, image crop/resize handles, movable/resizable object selection, advanced accurate lasso, audio recording, tape tool, stickers, tables with editable cell text, link previews, and full stylus button mappings are not complete yet.
+- Pressure sensitivity depends on browser/device support. This build uses pointer pressure when available; no claim of hardware-level palm rejection. Software ignores touch as ink, but actual palm rejection also depends on tablet/browser digitizer behaviour.
+- Infinite canvas is currently a large working surface, not an unbounded virtual canvas.
+- Data is local to this browser profile. Download regular backups before clearing browser data.
 
-Technical:
-- Vanilla HTML/CSS/JS, no React/Vite.
-- JSZip is bundled locally so archive import works offline after deployment/cache.
-- IndexedDB schema upgraded to v2.
+TEST STATUS
+- JavaScript syntax checked with Node.js.
+- Not yet tested on the user's tablet or deployed GitHub Pages environment. Please test stylus writing, finger navigation, page switching, autosave and backup before relying on it for important notes.

@@ -1,57 +1,12 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#202124"><meta name="description" content="A handwriting-first active recall notebook">
-<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
-<title>RecallNote</title><link rel="stylesheet" href="style.css">
-</head>
-<body>
-<header class="topbar">
-  <button class="iconbtn" id="backBtn" aria-label="Back">‹</button><div class="brand">Recall<span>Note</span></div>
-  <div class="docname" id="docName">Untitled notebook</div>
-  <div class="top-actions"><span id="saveStatus" class="status">Saved locally</span><input id="noteFileInput" type="file" accept=".note,application/zip" hidden>
-  <button class="iconbtn" id="newPageBtn" title="New page">＋</button><button class="iconbtn" id="installBtn" hidden title="Install app">⇩</button><button class="iconbtn" id="menuBtn" title="More">⋯</button></div>
-</header>
-<nav class="toolbar" aria-label="Drawing tools">
-  <button class="modebtn import-note" id="importNoteBtn" title="Import a StarNote notebook file">⇧ Import .note</button>
-  <div class="toolgroup">
-    <button class="tool active" data-tool="pen" title="Pen">✎<small>Pen</small></button>
-    <button class="tool" data-tool="pencil" title="Pencil">✐<small>Pencil</small></button>
-    <button class="tool" data-tool="highlighter" title="Highlighter">▰<small>Highlight</small></button>
-    <button class="tool" data-tool="eraser" title="Eraser">◩<small>Eraser</small></button>
-    <button class="tool" data-tool="lasso" title="Lasso">⌁<small>Lasso</small></button>
-  </div>
-  <div class="separator"></div>
-  <div class="toolgroup compact">
-    <button class="iconbtn" id="undoBtn" title="Undo">↶</button><button class="iconbtn" id="redoBtn" title="Redo">↷</button>
-  </div>
-  <div class="separator"></div>
-  <div class="swatches" id="swatches"><button class="swatch selected" data-color="#f4f4f4" style="--sw:#f4f4f4"></button><button class="swatch" data-color="#f3c84b" style="--sw:#f3c84b"></button><button class="swatch" data-color="#f08080" style="--sw:#f08080"></button><button class="swatch" data-color="#69b8df" style="--sw:#69b8df"></button><button class="swatch" data-color="#79c69a" style="--sw:#79c69a"></button></div>
-  <div class="separator"></div>
-  <label class="size-control">Size <input id="sizeRange" type="range" min="1" max="18" value="3"><output id="sizeValue">3</output></label>
-  <div class="separator"></div>
-  <button class="modebtn" id="canvasModeBtn">Fixed page ▾</button>
-  <button class="modebtn recall" id="createClozeBtn" title="Create cloze from lasso selection">＋ Cloze</button>
-  <button class="modebtn recall" id="recallBtn" title="Toggle recall mode">✦ Recall</button>
-  <button class="modebtn" id="imageBtn" title="Insert image">▧ Image</button>
-  <button class="modebtn" id="occlusionBtn" title="Draw image occlusion masks">▣ Mask</button>
-  <button class="modebtn" id="revealAllBtn" title="Reveal all answers">Reveal all</button>
-  <button class="modebtn" id="hideAllBtn" title="Hide all answers">Hide all</button>
-  <input id="imageInput" type="file" accept="image/*" hidden>
-</nav>
-<main class="workspace">
-  <aside class="sidepanel" id="sidepanel"><div class="side-title">PAGES <button id="addPageSide">＋</button></div><div id="pageList" class="page-list"></div><div class="side-footer">Local notebook</div></aside>
-  <section class="stage" id="stage">
-    <div class="canvas-wrap" id="canvasWrap"><canvas id="paper"></canvas><canvas id="overlay"></canvas></div>
-    <div class="floating-controls"><button id="zoomOut">−</button><span id="zoomLabel">100%</span><button id="zoomIn">＋</button><button id="fitBtn" title="Fit page">⤢</button></div>
-    <div class="page-indicator" id="pageIndicator">1 / 1</div>
-    <div class="hint" id="hint">Use your stylus or finger to write</div>
-  </section>
-</main>
-<div class="toast" id="toast" role="status"></div>
-<dialog id="modeDialog"><h3>Canvas type</h3><button data-mode="fixed">Fixed paper page</button><button data-mode="infinite">Infinite canvas</button><button class="dialog-close">Cancel</button></dialog>
-<dialog id="recallDialog"><h3>Recall mode</h3><p id="recallInfo">Tap a hidden region to reveal it.</p><button class="dialog-close">Close</button></dialog>
-<dialog id="menuDialog"><h3>Notebook options</h3><button id="renameBtn">Rename notebook</button><button id="clearPageBtn">Clear current page</button><button id="exportBtn">Export page as PNG</button><button id="backupBtn">Download notebook backup</button><button class="dialog-close">Close</button></dialog>
-<script src="jszip.min.js"></script><script src="app.js"></script>
-</body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#202124"><meta name="description" content="RecallNote — handwriting-first active recall notebook"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg"><title>RecallNote</title><link rel="stylesheet" href="style.css"></head><body>
+<header class="top"><button id="homeBtn" class="ico">⌂</button><b class="brand">Recall<span>Note</span></b><span id="crumb">Library</span><span class="grow"></span><span id="saveState">Ready</span><button id="themeBtn" class="ico" title="Toggle theme">◐</button><button id="menuBtn" class="ico">⋯</button></header>
+<section id="library" class="library"><aside class="nav"><input id="search" placeholder="⌕ Search notes"><button data-view="all" class="navitem active">▤ All notes</button><button data-view="recent" class="navitem">◷ Recent</button><button data-view="trash" class="navitem">▱ Trash</button><div class="navhead">FOLDERS <button id="addFolder">＋</button></div><div id="folders"></div><div class="navhead">TAGS <button id="addTag">＋</button></div><div id="tags"></div></aside><main class="libmain"><div class="libhead"><div><h1 id="viewTitle">All notes</h1><p>Organise your notebooks and study pages</p></div><button id="createNote" class="primary">＋ Create note</button></div><div id="noteGrid" class="notegrid"></div></main></section>
+<section id="editor" hidden><div class="editbar"><button id="backLibrary" class="ico">‹</button><input id="noteTitle" aria-label="Notebook title"><button id="addPage" class="ico" title="Add page">＋</button><button id="pageOverview" class="ico" title="Page overview">▦</button><button id="exportPDF" class="ico" title="Export page">⇩</button><button id="backup" class="ico" title="Backup">⬇</button></div>
+<nav class="tools"><div class="toolset"><button class="tool active" data-tool="pen">✎<small>Pen</small></button><button class="tool" data-tool="pencil">✐<small>Pencil</small></button><button class="tool" data-tool="highlighter">▰<small>Highlight</small></button><button class="tool" data-tool="eraser">◩<small>Eraser</small></button><button class="tool" data-tool="lasso">⌁<small>Lasso</small></button></div><i></i><div class="toolset"><button class="tool" data-tool="line">╱<small>Line</small></button><button class="tool" data-tool="rect">□<small>Rect</small></button><button class="tool" data-tool="ellipse">◯<small>Oval</small></button><button class="tool" data-tool="arrow">↗<small>Arrow</small></button><button class="tool" data-tool="text">T<small>Text</small></button><button class="tool" data-tool="image">▧<small>Image</small></button></div><i></i><div class="colors" id="colors"><button data-color="#f5f5f5" style="--c:#f5f5f5" class="sel"></button><button data-color="#171717" style="--c:#171717"></button><button data-color="#efc94c" style="--c:#efc94c"></button><button data-color="#ed7777" style="--c:#ed7777"></button><button data-color="#55b8dd" style="--c:#55b8dd"></button><button data-color="#77c58d" style="--c:#77c58d"></button><input id="customColor" type="color" value="#f5f5f5" title="Custom colour"></div><label class="range">Size <input id="width" type="range" min="1" max="24" value="3"><output id="widthOut">3</output></label><i></i><div class="toolset"><button id="undo" class="tool">↶<small>Undo</small></button><button id="redo" class="tool">↷<small>Redo</small></button><button id="lassoCloze" class="tool recallTool">▧<small>Cloze</small></button><button id="maskTool" class="tool recallTool">▨<small>Occlude</small></button><button id="recallMode" class="tool recallTool">✦<small>Recall</small></button></div><i></i><button id="moreTools" class="pill">More tools ▾</button></nav>
+<div id="morePanel" class="morepanel" hidden><button data-action="tape">Tape</button><button data-action="audio">Audio note</button><button data-action="table">Insert table</button><button data-action="link">Add link</button><button data-action="tag">Tag page</button><button data-action="reveal">Reveal all</button><button data-action="hide">Hide all</button><button data-action="fullscreen">Fullscreen</button><button data-action="clear">Clear page</button></div>
+<div class="workarea"><aside class="pages"><div class="paneltitle">PAGES <button id="addPage2">＋</button></div><div id="pageThumbs"></div></aside><main id="stage" class="stage"><div id="paperWrap"><canvas id="paper"></canvas><canvas id="overlay"></canvas></div><div class="zoom"><button id="zoomMinus">−</button><span id="zoomLabel">100%</span><button id="zoomPlus">＋</button><button id="fit">⤢</button></div><div id="pageCount" class="pagecount">1 / 1</div><div class="gesturehint">Stylus writes · Finger navigates</div></main><aside id="overview" class="overview" hidden><div class="paneltitle">DOCUMENT OVERVIEW <button id="closeOverview">×</button></div><div id="overviewList"></div></aside></div></section>
+<input id="imageFile" type="file" accept="image/*" hidden><input id="audioFile" type="file" accept="audio/*" hidden>
+<dialog id="createDialog"><h2>Create notebook</h2><label>Title<input id="newTitle" placeholder="e.g. Biology Notes"></label><label>Folder<select id="newFolder"></select></label><label>Page format<select id="format"><option value="a4p">A4 Portrait</option><option value="a4l">A4 Landscape</option><option value="a3p">A3 Portrait</option><option value="infinite">Infinite canvas</option></select></label><label>Paper template<select id="template"><option value="blank">Blank</option><option value="ruled">Ruled</option><option value="grid">Grid</option><option value="dot">Dot grid</option></select></label><label>Paper colour<input id="paperColor" type="color" value="#fffdf8"></label><div class="dialogactions"><button id="cancelCreate">Cancel</button><button id="confirmCreate" class="primary">Create</button></div></dialog>
+<dialog id="settingsDialog"><h2>RecallNote settings</h2><div class="settingsgrid"><label>Finger input<select id="fingerSetting"><option value="navigate">Navigate only (selected)</option></select></label><label>Default pen pressure<select id="pressureSetting"><option value="auto">Use device pressure</option><option value="off">Ignore pressure</option></select></label><label>Stylus palm guard<select id="palmSetting"><option value="on">Enabled</option><option value="off">Disabled</option></select></label><label>Theme<select id="themeSetting"><option value="dark">Dark</option><option value="light">Light</option></select></label></div><p class="muted">Browser support varies for stylus pressure, buttons and palm rejection. Finger touch is reserved for canvas navigation and never creates ink.</p><button id="closeSettings" class="primary">Done</button></dialog>
+<dialog id="recallDialog"><h2>Recall mode</h2><p>Tap hidden cloze or image-occlusion masks to reveal them. Use Reveal all / Hide all from More tools.</p><button id="closeRecall" class="primary">Continue</button></dialog><div id="toast" class="toast"></div>
+<script src="app.js"></script><script>if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});</script></body></html>
