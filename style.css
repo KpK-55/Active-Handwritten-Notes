@@ -5,3 +5,6 @@
 .toolbar .modebtn{flex-shrink:0}
 #imageInput{display:none}
 @media(max-width:700px){.toolbar{overflow-x:auto;overscroll-behavior-x:contain}.modebtn{font-size:10px;padding:7px 8px}}
+
+/* Keep StarNote import easy to find on tablet and desktop */
+.toolbar .import-note{flex-shrink:0;background:#164b5a;border-color:#1689a5;color:#b8f1fb;font-weight:650;padding:9px 12px}

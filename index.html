@@ -10,10 +10,11 @@
 <header class="topbar">
   <button class="iconbtn" id="backBtn" aria-label="Back">‹</button><div class="brand">Recall<span>Note</span></div>
   <div class="docname" id="docName">Untitled notebook</div>
-  <div class="top-actions"><span id="saveStatus" class="status">Saved locally</span><button class="modebtn" id="importNoteBtn" title="Import StarNote .note">Import .note</button><input id="noteFileInput" type="file" accept=".note,application/zip" hidden>
+  <div class="top-actions"><span id="saveStatus" class="status">Saved locally</span><input id="noteFileInput" type="file" accept=".note,application/zip" hidden>
   <button class="iconbtn" id="newPageBtn" title="New page">＋</button><button class="iconbtn" id="installBtn" hidden title="Install app">⇩</button><button class="iconbtn" id="menuBtn" title="More">⋯</button></div>
 </header>
 <nav class="toolbar" aria-label="Drawing tools">
+  <button class="modebtn import-note" id="importNoteBtn" title="Import a StarNote notebook file">⇧ Import .note</button>
   <div class="toolgroup">
     <button class="tool active" data-tool="pen" title="Pen">✎<small>Pen</small></button>
     <button class="tool" data-tool="pencil" title="Pencil">✐<small>Pencil</small></button>
