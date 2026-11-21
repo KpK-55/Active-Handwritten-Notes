@@ -30,7 +30,13 @@
   <label class="size-control">Size <input id="sizeRange" type="range" min="1" max="18" value="3"><output id="sizeValue">3</output></label>
   <div class="separator"></div>
   <button class="modebtn" id="canvasModeBtn">Fixed page ▾</button>
-  <button class="modebtn recall" id="recallBtn" title="Recall tools coming in Phase 2">✦ Recall</button>
+  <button class="modebtn recall" id="createClozeBtn" title="Create cloze from lasso selection">＋ Cloze</button>
+  <button class="modebtn recall" id="recallBtn" title="Toggle recall mode">✦ Recall</button>
+  <button class="modebtn" id="imageBtn" title="Insert image">▧ Image</button>
+  <button class="modebtn" id="occlusionBtn" title="Draw image occlusion masks">▣ Mask</button>
+  <button class="modebtn" id="revealAllBtn" title="Reveal all answers">Reveal all</button>
+  <button class="modebtn" id="hideAllBtn" title="Hide all answers">Hide all</button>
+  <input id="imageInput" type="file" accept="image/*" hidden>
 </nav>
 <main class="workspace">
   <aside class="sidepanel" id="sidepanel"><div class="side-title">PAGES <button id="addPageSide">＋</button></div><div id="pageList" class="page-list"></div><div class="side-footer">Local notebook</div></aside>
@@ -43,6 +49,7 @@
 </main>
 <div class="toast" id="toast" role="status"></div>
 <dialog id="modeDialog"><h3>Canvas type</h3><button data-mode="fixed">Fixed paper page</button><button data-mode="infinite">Infinite canvas</button><button class="dialog-close">Cancel</button></dialog>
+<dialog id="recallDialog"><h3>Recall mode</h3><p id="recallInfo">Tap a hidden region to reveal it.</p><button class="dialog-close">Close</button></dialog>
 <dialog id="menuDialog"><h3>Notebook options</h3><button id="renameBtn">Rename notebook</button><button id="clearPageBtn">Clear current page</button><button id="exportBtn">Export page as PNG</button><button id="backupBtn">Download notebook backup</button><button class="dialog-close">Close</button></dialog>
 <script src="app.js"></script>
 </body></html>

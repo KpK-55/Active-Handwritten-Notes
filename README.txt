@@ -1,34 +1,37 @@
-RecallNote – Phase 1 tablet-first MVP
+RecallNote – Phase 2 MVP (tablet-first)
 
-Files
-- index.html: application shell
-- style.css: StarNote-inspired dark UI
-- app.js: Canvas handwriting engine and IndexedDB persistence
-- manifest.webmanifest + sw.js + icon.svg: installable PWA support
-
-Run locally
+Run
 1. Extract this folder.
-2. Serve it over localhost (service workers/PWA require localhost or HTTPS).
-   Easiest on a PC with Python installed, open a terminal in this folder and run:
-       python -m http.server 8000
-3. Open http://localhost:8000 in Chrome or Edge.
-4. For tablet installation, host the folder on an HTTPS static host (e.g. GitHub Pages), open the URL in Chrome, then use Install app / Add to Home screen.
+2. Serve over localhost or HTTPS:
+   python -m http.server 8000
+3. Open http://localhost:8000
+4. For Android tablet installation, deploy to GitHub Pages and install from Chrome.
 
-Current Phase 1 scope
-- Pen, pencil-style pen, highlighter, stroke eraser
-- Pointer Events and pressure capture
-- Lasso selection of strokes
-- Undo/redo for completed stroke/erase actions
-- Fixed-page and large-canvas modes
-- Zoom controls and page list
-- IndexedDB local persistence
-- PNG page export and JSON notebook backup
-- PWA manifest and offline cache
+Included
+- Canvas handwriting: pen, pencil preset, highlighter, whole-stroke eraser
+- Stylus/finger Pointer Events and pressure capture
+- Lasso selection
+- Create Cloze from selected handwriting (bounding-region mask)
+- Recall mode: tap a hidden region to reveal it
+- Reveal all / Hide all controls
+- Import an image into the page
+- Rectangular image occlusion masks using the Mask tool
+- Fixed paper and large work-surface modes
+- Multiple pages
+- IndexedDB persistence
+- PNG export and JSON notebook backup
+- PWA manifest and offline service worker
 
-Known MVP limitations
-- Infinite canvas is currently a large pannable/zoomable work surface, not an unbounded world-coordinate canvas.
-- Lasso currently selects strokes that have at least one point inside the polygon; it is a first-pass selector.
-- Eraser removes whole strokes when touched, not partial stroke segments.
-- Pencil is currently a pen-style stroke preset; pressure-sensitive width interpolation and pencil texture need refinement.
-- Multi-page navigation and local storage are implemented, but notebook/folder management, cloud sync, PDF import, cloze, and image occlusion are not yet included.
-- PWA offline caching works only when served from localhost or HTTPS.
+Important MVP limitations
+- Cloze currently masks the bounding rectangle around selected strokes; it does not yet provide precise stroke-shaped masking.
+- Image occlusion masks are rectangular only; freeform and ellipse masks are planned.
+- Images are positioned centrally on import; move/resize/select image tools are not yet implemented.
+- Eraser removes whole strokes.
+- Infinite canvas is a large work surface, not truly unbounded.
+- Undo/redo currently covers handwriting add/remove, not every object/mask operation.
+- No cloud sync yet. Data is stored locally in the browser's IndexedDB.
+- Test stylus pressure and pointer behavior on the target tablet; browser and stylus support vary.
+
+Data model
+Each page stores strokes, cloze regions, imported images and occlusion masks separately.
+Original handwriting strokes remain stored when a cloze is created.
