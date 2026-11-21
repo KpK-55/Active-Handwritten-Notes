@@ -1,0 +1,6 @@
+const DB_NAME="RecallStudioDB",STORE="documents";
+function openDB(){return new Promise((resolve,reject)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=()=>r.result.createObjectStore(STORE,{keyPath:"id"});r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
+export async function getAll(){const db=await openDB();return new Promise((resolve,reject)=>{const r=db.transaction(STORE).objectStore(STORE).getAll();r.onsuccess=()=>resolve(r.result||[]);r.onerror=()=>reject(r.error);});}
+export async function get(id){const db=await openDB();return new Promise((resolve,reject)=>{const r=db.transaction(STORE).objectStore(STORE).get(id);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
+export async function put(doc){const db=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE,"readwrite");tx.objectStore(STORE).put(doc);tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error);});}
+export async function replaceAll(docs){const db=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE,"readwrite"),s=tx.objectStore(STORE);s.clear();docs.forEach(d=>s.put(d));tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error);});}

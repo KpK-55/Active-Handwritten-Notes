@@ -1,1 +1,8 @@
-{"name":"Handwritten Active Recall Studio","short_name":"Recall Studio","start_url":"./","display":"standalone","background_color":"#202326","theme_color":"#202326"}
+{
+  "name": "Handwritten Active Recall Studio",
+  "short_name": "Recall Studio",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#222426",
+  "theme_color": "#222426"
+}
